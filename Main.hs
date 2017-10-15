@@ -11,12 +11,23 @@ main = do
     listen sock 2                               -- Setting a max of 2 queued connections
     mainLoop sock                               -- mainLoop will be responsible for accepting a connection,
                                                 -- running the Server logic, closing the connection,
-                                                -- and recursing back to the Original server
+                                                -- and passing the control back to the Original server
 
 
 mainLoop :: Socket -> IO()
 mainLoop sock = do
-    conn <- accept sock
-    runConn conn
+    conn <- accept sock                         -- Accepting a connection and handling it
+    runConn conn                                -- Passing the conn (Socket object OR sock connection) to Server
+                                                -- logic code
+    mainLoop sock                               -- Repeat the process
+
+runConn :: (Socket, SockAddr) -> IO()           -- Accepting a conn has a return type
+runConn (sock, _) = do                          -- sock and SockAddr (port number) is not mentioned
+    send sock "Hello\n"                         -- Sending a string "Hello" to the client
+    close sock                                  -- Closing the socket connection
+
+
+
+
 
 
