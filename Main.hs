@@ -1,6 +1,7 @@
 module Main where
 
 import Network.Socket
+import System.IO
 
 main :: IO()
 
@@ -21,10 +22,16 @@ mainLoop sock = do
                                                 -- logic code
     mainLoop sock                               -- Repeat the process
 
+-- Changing runnConn method as Network.Socket recommends to use ByteString Module but we will use System.IO for
+-- simplicity; Turning our Socket into handle
 runConn :: (Socket, SockAddr) -> IO()           -- Accepting a conn has a return type
 runConn (sock, _) = do                          -- sock and SockAddr (port number) is not mentioned
-    send sock "Hello\n"                         -- Sending a string "Hello" to the client
-    close sock                                  -- Closing the socket connection
+    -- send sock "Hello\n"                         -- Sending a string "Hello" to the client
+    -- close sock                                  -- Closing the socket connection
+    hdl <- socketToHandle sock ReadWriteMode
+    hSetBuffering hdl NoBuffering
+    hPutStrLn hdl "Hello!"
+    hClose hdl
 
 
 
