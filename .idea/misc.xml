@@ -3,4 +3,5 @@
   <component name="ProjectRootManager" version="2" project-jdk-name="Haskell" project-jdk-type="Haskell SDK">
     <output url="file://$PROJECT_DIR$/dist" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
